@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ma Liste d'Animés</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen p-6">
+  <h1 class="text-3xl font-bold text-center mb-6">🎥 Animés à Voir</h1>
+
+  <div id="anime-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+
+  <script>
+    // Données simulées depuis Google Sheets (1 seul anime)
+    const animeData = [
+      {
+        titre: "Kowloon Generic Romance",
+        slug: "kowloon-generic-romance",
+        episodes_vus: 2,
+        episodes_dispo: 5
+      }
+    ];
+
+    const animeList = document.getElementById("anime-list");
+
+    animeData.forEach(anime => {
+      const aVoir = anime.episodes_dispo - anime.episodes_vus;
+      const prochain = anime.episodes_vus + 1;
+      const lien = `https://v6.voiranime.com/anime/${anime.slug}/${anime.slug}-${prochain.toString().padStart(2, '0')}-vostfr/`;
+
+      const card = document.createElement("div");
+      card.className = "bg-white rounded-2xl shadow-md p-4 flex flex-col items-start";
+      card.innerHTML = `
+        <h2 class="text-xl font-semibold mb-2">${anime.titre}</h2>
+        <p>🎬 Épisodes vus : ${anime.episodes_vus}</p>
+        <p>📺 Dispo : ${anime.episodes_dispo}</p>
+        <p class="mb-2">🔥 À voir : ${aVoir} épisode${aVoir > 1 ? 's' : ''}</p>
+        <a href="${lien}" target="_blank" class="bg-blue-600 text-white px-4 py-2 rounded-xl hover:bg-blue-700 transition">Regarder épisode ${prochain}</a>
+      `;
+
+      animeList.appendChild(card);
+    });
+  </script>
+</body>
+</html>
