@@ -12,35 +12,47 @@
   <div id="anime-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
 
   <script>
-    // Données simulées depuis Google Sheets (1 seul anime)
-    const animeData = [
-      {
-        titre: "Kowloon Generic Romance",
-        slug: "kowloon-generic-romance",
-        episodes_vus: 2,
-        episodes_dispo: 5
-      }
-    ];
+    const sheetId = "1WuGg-AH0X1x5ZdOswZlwn5KxE-V0TKeYTxovN20E9UE";
+    const sheetUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv`;
 
-    const animeList = document.getElementById("anime-list");
+    fetch(sheetUrl)
+      .then(res => res.text())
+      .then(data => {
+        const rows = data.trim().split('\n').slice(1); // skip header
+        const animeData = rows.map(row => {
+          const [titre, slug, episodes_vus, episodes_dispo] = row.split(',');
+          return {
+            titre,
+            slug,
+            episodes_vus: parseInt(episodes_vus),
+            episodes_dispo: parseInt(episodes_dispo),
+          };
+        });
 
-    animeData.forEach(anime => {
-      const aVoir = anime.episodes_dispo - anime.episodes_vus;
-      const prochain = anime.episodes_vus + 1;
-      const lien = `https://v6.voiranime.com/anime/${anime.slug}/${anime.slug}-${prochain.toString().padStart(2, '0')}-vostfr/`;
+        displayAnime(animeData);
+      });
 
-      const card = document.createElement("div");
-      card.className = "bg-white rounded-2xl shadow-md p-4 flex flex-col items-start";
-      card.innerHTML = `
-        <h2 class="text-xl font-semibold mb-2">${anime.titre}</h2>
-        <p>🎬 Épisodes vus : ${anime.episodes_vus}</p>
-        <p>📺 Dispo : ${anime.episodes_dispo}</p>
-        <p class="mb-2">🔥 À voir : ${aVoir} épisode${aVoir > 1 ? 's' : ''}</p>
-        <a href="${lien}" target="_blank" class="bg-blue-600 text-white px-4 py-2 rounded-xl hover:bg-blue-700 transition">Regarder épisode ${prochain}</a>
-      `;
+    function displayAnime(data) {
+      const animeList = document.getElementById("anime-list");
+      animeList.innerHTML = "";
 
-      animeList.appendChild(card);
-    });
+      data.forEach(anime => {
+        const aVoir = anime.episodes_dispo - anime.episodes_vus;
+        const prochain = anime.episodes_vus + 1;
+        const lien = `https://v6.voiranime.com/anime/${anime.slug}/${anime.slug}-${prochain.toString().padStart(2, '0')}-vostfr/`;
+
+        const card = document.createElement("div");
+        card.className = "bg-white rounded-2xl shadow-md p-4 flex flex-col items-start";
+        card.innerHTML = `
+          <h2 class="text-xl font-semibold mb-2">${anime.titre}</h2>
+          <p>🎬 Épisodes vus : ${anime.episodes_vus}</p>
+          <p>📺 Dispo : ${anime.episodes_dispo}</p>
+          <p class="mb-2">🔥 À voir : ${aVoir} épisode${aVoir > 1 ? 's' : ''}</p>
+          <a href="${lien}" target="_blank" class="bg-blue-600 text-white px-4 py-2 rounded-xl hover:bg-blue-700 transition">Regarder épisode ${prochain}</a>
+        `;
+        animeList.appendChild(card);
+      });
+    }
   </script>
 </body>
 </html>
