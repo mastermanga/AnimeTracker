@@ -30,9 +30,6 @@
           };
         });
 
-        // Trier les animes par nombre d'épisodes à voir (en ordre décroissant)
-        animeData.sort((a, b) => (b.episodes_dispo - b.episodes_vus) - (a.episodes_dispo - a.episodes_vus));
-
         displayAnime(animeData);
       });
 
@@ -46,7 +43,7 @@
         const lien = `https://v6.voiranime.com/anime/${anime.slug}/${anime.slug}-${prochain.toString().padStart(2, '0')}-vostfr/`;
 
         // Déterminer si le lien doit être désactivé (si aucun épisode à voir)
-        const isDisabled = aVoir === 0 ? 'pointer-events-none opacity-50' : '';
+        const isDisabled = aVoir === 0 ? 'pointer-events-none opacity-50' : ''; // Appliquer classes CSS pour désactiver
 
         const card = document.createElement("div");
         card.className = "bg-white rounded-2xl shadow-md p-4 flex flex-col md:flex-row items-start space-x-4";
@@ -73,4 +70,3 @@
   </script>
 </body>
 </html>
-
