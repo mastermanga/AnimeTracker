@@ -41,12 +41,12 @@
       animeList.innerHTML = "";
 
       data.forEach(anime => {
-        const aVoir = anime.episodes_dispo - anime.episodes_vus;
+        const aVoir = anime.nb_episode - anime.episodes_vus;
         const prochain = anime.episodes_vus + 1;
         const lien = `https://v6.voiranime.com/anime/${anime.slug}/${anime.slug}-${prochain.toString().padStart(2, '0')}-vostfr/`;
 
-        // Déterminer la couleur du bouton : rouge si aucun épisode à voir
-        const buttonColor = aVoir === 0 ? 'bg-red-600' : 'bg-blue-600'; 
+        // Déterminer si le lien doit être désactivé (si aucun épisode à voir)
+        const isDisabled = aVoir === 0 ? 'pointer-events-none opacity-50' : '';
 
         const card = document.createElement("div");
         card.className = "bg-white rounded-2xl shadow-md p-4 flex flex-col md:flex-row items-start space-x-4";
@@ -59,13 +59,12 @@
           <div class="flex flex-col justify-start">
             <h2 class="text-xl font-semibold mb-2">${anime.titre}</h2>
             <p>🎬 Épisodes vus : ${anime.episodes_vus}</p>
-            <p>📺 Dispo : ${anime.episodes_dispo}</p>
+            <p>📺 Dispo : ${anime.nb_episode}</p>
             <p class="mb-2">🔥 À voir : ${aVoir} épisode${aVoir > 1 ? 's' : ''}</p>
             <p class="mb-2">📼 Total d'épisodes : ${anime.nb_episode}</p> <!-- Affichage du nb d'épisodes -->
-            <a href="${lien}" target="_blank" class="bg-blue-600 text-white px-4 py-2 rounded-xl hover:bg-blue-700 transition">Regarder épisode ${prochain}</a>
-            <button class="${buttonColor} text-white px-4 py-2 rounded-xl mt-4 hover:bg-red-700 transition" ${aVoir === 0 ? 'disabled' : ''}>
-              ${aVoir === 0 ? 'Terminé' : '+1 Épisode'}
-            </button> <!-- Bouton avec couleur conditionnelle et texte -->
+            <a href="${lien}" target="_blank" class="bg-blue-600 text-white px-4 py-2 rounded-xl hover:bg-blue-700 transition ${isDisabled}">
+              Regarder épisode ${prochain}
+            </a>
           </div>
         `;
         animeList.appendChild(card);
@@ -74,5 +73,4 @@
   </script>
 </body>
 </html>
-
 
