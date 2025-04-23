@@ -52,30 +52,38 @@
           </div>
           <div class="flex flex-col justify-start">
             <h2 class="text-xl font-semibold mb-2">${anime.titre}</h2>
-            <p>🎬 Épisodes vus : ${anime.episodes_vus}</p>
+            <p>🎬 Épisodes vus : <span id="episodes-vus-${index}">${anime.episodes_vus}</span></p>
             <p>📺 Dispo : ${anime.nb_episode}</p>
             <p class="mb-2">🔥 À voir : ${aVoir} épisode${aVoir > 1 ? 's' : ''}</p>
             <p class="mb-2">📼 Total d'épisodes : ${anime.nb_episode}</p>
             <a href="${lien}" target="_blank" class="bg-blue-600 text-white px-4 py-2 rounded-xl hover:bg-blue-700 transition">Regarder épisode ${prochain}</a>
-            <button class="bg-green-600 text-white px-4 py-2 rounded-xl mt-4 hover:bg-green-700 transition" onclick="updateEpisodesVus(${index}, ${anime.episodes_vus})">Actualiser</button> <!-- Bouton d'actualisation -->
+            <div class="flex mt-4 items-center">
+              <button class="bg-green-600 text-white px-4 py-2 rounded-xl hover:bg-green-700 transition mr-2" onclick="incrementEpisodesVus(${index}, ${anime.episodes_vus})">+1 Épisode</button>
+            </div>
           </div>
         `;
         animeList.appendChild(card);
       });
     }
 
-    // Fonction pour mettre à jour le nombre d'épisodes vus dans Google Sheets
-    function updateEpisodesVus(index, currentEpisodesVus) {
+    // Fonction pour incrémenter le nombre d'épisodes vus dans le site
+    function incrementEpisodesVus(index, currentEpisodesVus) {
       const updatedEpisodesVus = currentEpisodesVus + 1;  // Incrémenter de 1
+      const episodesVusSpan = document.getElementById(`episodes-vus-${index}`);
+      episodesVusSpan.textContent = updatedEpisodesVus;  // Met à jour l'affichage sur la page
 
-      // Ici tu feras la requête pour mettre à jour le Google Sheets avec la nouvelle valeur d'épisodes vus
-      console.log(`Mettre à jour les épisodes vus de l'anime index ${index} : ${updatedEpisodesVus}`);
+      // Appel à la fonction qui mettra à jour la Google Sheet
+      updateGoogleSheet(index, updatedEpisodesVus);
 
-      // Appeler ici ton API backend ou fonction pour mettre à jour le Google Sheets
-      // Exemple : updateGoogleSheet(index, updatedEpisodesVus);
+      // Réactualiser l'affichage dans Google Sheets si nécessaire
+      // Si vous avez un backend pour la mise à jour sur Google Sheets, vous devriez envoyer une requête ici.
+    }
 
-      // Réactualiser l'affichage pour refléter le changement
-      location.reload(); // Pour réactualiser la page après mise à jour
+    // Fonction pour mettre à jour le Google Sheets (exemple backend)
+    function updateGoogleSheet(index, updatedEpisodesVus) {
+      console.log(`Mise à jour de l'anime ${index} avec ${updatedEpisodesVus} épisodes vus.`);
+      // Envoie une requête à votre backend ou API pour mettre à jour la feuille Google Sheets avec la nouvelle valeur d'épisodes vus
+      // Exemple : envoyer une requête à un serveur backend pour mettre à jour la cellule des épisodes vus dans Google Sheets
     }
 
   </script>
