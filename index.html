@@ -38,32 +38,27 @@
       animeList.innerHTML = "";
 
       data.forEach(anime => {
-        const aVoir = anime.nb_episode - anime.episodes_vus;
+        const aVoir = anime.episodes_dispo - anime.episodes_vus;
         const prochain = anime.episodes_vus + 1;
-        const lien = `https://v6.voiranime.com/anime/${anime.slug}/${anime.slug}-${prochain.toString().padStart(2, '0')}-vostfr/`;
-
-        // Déterminer si le lien doit être désactivé (si aucun épisode à voir)
-        const isDisabled = aVoir === 0 ? 'pointer-events-none opacity-50' : ''; // Appliquer classes CSS pour désactiver
+        const lien = https://v6.voiranime.com/anime/${anime.slug}/${anime.slug}-${prochain.toString().padStart(2, '0')}-vostfr/;
 
         const card = document.createElement("div");
         card.className = "bg-white rounded-2xl shadow-md p-4 flex flex-col md:flex-row items-start space-x-4";
 
         // Conteneur de l'image et du texte
-        card.innerHTML = `
+        card.innerHTML = 
           <div class="flex-shrink-0">
             <img src="${anime.image_url}" alt="${anime.titre}" class="w-32 h-48 object-cover mb-4 md:mb-0">
           </div>
           <div class="flex flex-col justify-start">
             <h2 class="text-xl font-semibold mb-2">${anime.titre}</h2>
             <p>🎬 Épisodes vus : ${anime.episodes_vus}</p>
-            <p>📺 Dispo : ${anime.nb_episode}</p>
+            <p>📺 Dispo : ${anime.episodes_dispo}</p>
             <p class="mb-2">🔥 À voir : ${aVoir} épisode${aVoir > 1 ? 's' : ''}</p>
             <p class="mb-2">📼 Total d'épisodes : ${anime.nb_episode}</p> <!-- Affichage du nb d'épisodes -->
-            <a href="${lien}" target="_blank" class="bg-blue-600 text-white px-4 py-2 rounded-xl hover:bg-blue-700 transition ${isDisabled}">
-              Regarder épisode ${prochain}
-            </a>
+            <a href="${lien}" target="_blank" class="bg-blue-600 text-white px-4 py-2 rounded-xl hover:bg-blue-700 transition">Regarder épisode ${prochain}</a>
           </div>
-        `;
+        ;
         animeList.appendChild(card);
       });
     }
