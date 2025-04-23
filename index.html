@@ -12,8 +12,8 @@
   <div id="anime-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
 
   <script>
-    const sheetId = "1WuGg-AH0X1x5ZdOswZlwn5KxE-V0TKeYTxovN20E9UE";
-    const sheetUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv`;
+const sheetId = "1WuGg-AH0X1x5ZdOswZlwn5KxE-V0TKeYTxovN20E9UE";
+const sheetUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv`;
 
     fetch(sheetUrl)
       .then(res => res.text())
