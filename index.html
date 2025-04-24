@@ -100,8 +100,9 @@
 
     // Écouter le clic sur le bouton pour changer de thème
     darkToggle.addEventListener("click", () => {
+      // Toggle la classe dark pour changer de thème
       html.classList.toggle("dark");
-      
+
       // Si le mode sombre est activé, enregistrer le mode sombre dans localStorage
       const isDark = html.classList.contains("dark");
       localStorage.setItem("theme", isDark ? "dark" : "light");
@@ -112,6 +113,7 @@
   </script>
 </body>
 </html>
+
 
 
 
