@@ -76,7 +76,7 @@
             <p>📺 Dispo : ${anime.episodes_dispo}</p>
             <p class="mb-2">🔥 À voir : ${aVoir} épisode${aVoir > 1 ? 's' : ''}</p>
             <p class="mb-2">📼 Total d'épisodes : ${anime.nb_episode}</p>
-            <a href="${lien}" target="_blank" class="bg-blue-600 dark:bg-blue-500 text-white px-4 py-2 rounded-xl hover:bg-blue-700 dark:hover:bg-blue-600 transition ${aVoir === 0 ? 'cursor-not-allowed bg-gray-400 dark:bg-gray-600' : ''}" ${aVoir === 0 ? 'disabled' : ''}>
+            <a href="${lien}" target="_blank" class="w-48 text-center bg-blue-600 dark:bg-blue-500 text-white px-4 py-2 rounded-xl hover:bg-blue-700 dark:hover:bg-blue-600 transition ${aVoir === 0 ? 'cursor-not-allowed bg-gray-400 dark:bg-gray-600' : ''}" ${aVoir === 0 ? 'disabled' : ''}>
               ${aVoir === 0 ? 'À jour' : `Regarder épisode ${prochain}`}
             </a>
           </div>
