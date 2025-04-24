@@ -90,17 +90,28 @@
     const html = document.getElementById("html-root");
     const darkToggle = document.getElementById("darkToggle");
 
+    // Vérifier le thème dans localStorage et l'appliquer
     if (localStorage.getItem("theme") === "dark") {
       html.classList.add("dark");
+      darkToggle.textContent = "☀️ Mode clair";  // Changer le texte du bouton en mode sombre
+    } else {
+      darkToggle.textContent = "🌙 Mode sombre";  // Changer le texte du bouton en mode clair
     }
 
+    // Écouter le clic sur le bouton pour changer de thème
     darkToggle.addEventListener("click", () => {
       html.classList.toggle("dark");
+      
+      // Si le mode sombre est activé, enregistrer le mode sombre dans localStorage
       const isDark = html.classList.contains("dark");
       localStorage.setItem("theme", isDark ? "dark" : "light");
+
+      // Modifier le texte du bouton en fonction du mode
+      darkToggle.textContent = isDark ? "☀️ Mode clair" : "🌙 Mode sombre";
     });
   </script>
 </body>
 </html>
+
 
 
