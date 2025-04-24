@@ -42,9 +42,26 @@
 
       data.forEach(anime => {
         const aVoir = anime.episodes_dispo - anime.episodes_vus;
-        const prochain = anime.episodes_vus + 1;
-        const lien = `https://v6.voiranime.com/anime/${anime.slug}/${anime.slug}-${String(prochain).padStart(2, '0')}-vostfr/`;
+        
+        // const prochain = anime.episodes_vus + 1;
+        // const lien = `https://v6.voiranime.com/anime/${anime.slug}/${anime.slug}-${String(prochain).padStart(2, '0')}-vostfr/`;
 
+
+        let lien;
+        const prochain = anime.episodes_vus + 1;
+        const prochainFormate = String(prochain).padStart(2, '0');
+        
+        // Sécurité : si l'épisode suivant n'existe pas (ex : dispo < prochain), on redirige vers la page principale
+        if (prochain > anime.episodes_dispo || prochain > anime.nb_episode) {
+          lien = `https://v6.voiranime.com/anime/${anime.slug}/`;
+        } else {
+          lien = `https://v6.voiranime.com/anime/${anime.slug}/${anime.slug}-${prochainFormate}-vostfr/`;
+        }
+
+        
+
+
+        
         const card = document.createElement("div");
         card.className = "bg-gray-800 rounded-2xl shadow-md p-4 flex flex-col md:flex-row items-start space-x-4";
 
