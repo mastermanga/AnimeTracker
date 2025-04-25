@@ -75,25 +75,52 @@
     }
 
     // Fonction pour mettre à jour les épisodes
-    function updateEpisodes(titre, episodes_vus) {
+    function updateEpisodes(titre, episodes_vus, button) {
       const newEpisodesVus = episodes_vus + 1; // Ajouter 1 épisode vu
-
+    
+      // Désactiver le bouton pour éviter les clics multiples
+      button.disabled = true;
+      button.textContent = "Mise à jour en cours...";
+    
+      // Ajouter un paramètre "cache_buster" pour forcer le rafraîchissement
+      const cacheBuster = new Date().getTime();
+      
       // Envoi de la requête GET à l'URL de mise à jour
-      fetch(`${updateUrl}?titre=${encodeURIComponent(titre)}&episodes_vus=${newEpisodesVus}`)
+      fetch(`${updateUrl}?titre=${encodeURIComponent(titre)}&episodes_vus=${newEpisodesVus}&cache_buster=${cacheBuster}`)
         .then(response => response.json())
         .then(data => {
+          const successMessage = button.parentElement.querySelector(".success-message");
+          const errorMessage = button.parentElement.querySelector(".error-message");
+    
           if (data.success) {
-            alert('Nombre d\'épisodes mis à jour avec succès !');
-            
+            successMessage.classList.remove("hidden");
+            errorMessage.classList.add("hidden");
+    
             // Mise à jour de l'affichage sans recharger la page
             updateAnimeInList(titre, newEpisodesVus);
+    
+            // Masquer le message après quelques secondes
+            setTimeout(() => {
+              successMessage.classList.add("hidden");
+            }, 3000);
           } else {
-            alert('Erreur de mise à jour.');
+            successMessage.classList.add("hidden");
+            errorMessage.classList.remove("hidden");
           }
         })
         .catch(err => {
-          alert('Erreur de connexion.');
+          const successMessage = button.parentElement.querySelector(".success-message");
+          const errorMessage = button.parentElement.querySelector(".error-message");
+    
+          successMessage.classList.add("hidden");
+          errorMessage.classList.remove("hidden");
+    
           console.error(err);
+        })
+        .finally(() => {
+          // Réactiver le bouton après la mise à jour
+          button.disabled = false;
+          button.textContent = "Mettre à jour les épisodes";
         });
     }
 
