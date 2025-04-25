@@ -1,13 +1,14 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" id="html-root" class="dark">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Anime Tracker</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="icon" href="favicon-32x32.png" type="image/png" />
 </head>
-<body class="bg-gray-100 min-h-screen p-6">
-  <h1 class="text-3xl font-bold text-center mb-6">🎥 Animés à Voir</h1>
+<body class="transition-colors duration-500 bg-gray-900 text-gray-100 min-h-screen p-6">
+  <h1 class="text-3xl font-bold text-center mb-4">🎥 Anime Tracker 🎥</h1>
 
   <div id="anime-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
 
@@ -17,7 +18,7 @@
     fetch(sheetUrl)
       .then(res => res.text())
       .then(data => {
-        const rows = data.trim().split('\n').slice(1); // skip header
+        const rows = data.trim().split('\n').slice(1);
         const animeData = rows.map(row => {
           const [titre, slug, episodes_vus, episodes_dispo, image_url, nb_episode] = row.split(',');
           return {
@@ -30,13 +31,7 @@
           };
         });
 
-        // Sort anime data by most "À voir" episodes
-        animeData.sort((a, b) => {
-          const aAVoir = a.episodes_dispo - a.episodes_vus;
-          const bAVoir = b.episodes_dispo - b.episodes_vus;
-          return bAVoir - aAVoir; // Sort descending
-        });
-
+        animeData.sort((a, b) => (b.episodes_dispo - b.episodes_vus) - (a.episodes_dispo - a.episodes_vus));
         displayAnime(animeData);
       });
 
@@ -46,24 +41,24 @@
 
       data.forEach(anime => {
         const aVoir = anime.episodes_dispo - anime.episodes_vus;
+        
         const prochain = anime.episodes_vus + 1;
-        const lien = `https://v6.voiranime.com/anime/${anime.slug}/${anime.slug}-${prochain.toString().padStart(2, '0')}-vostfr/`;
-
+        const lien = `https://v6.voiranime.com/anime/${anime.slug}/${anime.slug}-${String(prochain).padStart(2, '0')}-vostfr/`;
+        
         const card = document.createElement("div");
-        card.className = "bg-white rounded-2xl shadow-md p-4 flex flex-col md:flex-row items-start space-x-4";
+        card.className = "bg-gray-800 rounded-2xl shadow-md p-4 flex flex-col md:flex-row items-start space-x-4";
 
-        // Conteneur de l'image et du texte
         card.innerHTML = `
           <div class="flex-shrink-0">
-            <img src="${anime.image_url}" alt="${anime.titre}" class="w-32 h-48 object-cover mb-4 md:mb-0">
+            <img src="${anime.image_url}" alt="${anime.titre}" onerror="this.src='fallback.jpg'" class="w-32 h-48 object-cover mb-4 md:mb-0">
           </div>
           <div class="flex flex-col justify-start">
             <h2 class="text-xl font-semibold mb-2">${anime.titre}</h2>
-            <p>🎬 Épisodes vus : ${anime.episodes_vus}</p>
-            <p>📺 Dispo : ${anime.episodes_dispo}</p>
+            <p class="mb-1">📼 Total d'épisodes : ${anime.nb_episode}</p>
+            <p class="mb-1">🎬 Visionnés : ${anime.episodes_vus}</p>
+            <p class="mb-1">📺 Sortis : ${anime.episodes_dispo}</p>
             <p class="mb-2">🔥 À voir : ${aVoir} épisode${aVoir > 1 ? 's' : ''}</p>
-            <p class="mb-2">📼 Total d'épisodes : ${anime.nb_episode}</p> <!-- Affichage du nb d'épisodes -->
-            <a href="${lien}" target="_blank" class="bg-blue-600 text-white px-4 py-2 rounded-xl hover:bg-blue-700 transition ${aVoir === 0 ? 'cursor-not-allowed bg-gray-400' : ''}" ${aVoir === 0 ? 'disabled' : ''}>
+            <a href="${lien}" target="_blank" class="w-48 text-center bg-blue-500 text-white px-4 py-2 rounded-xl hover:bg-blue-600 transition ${aVoir === 0 ? 'cursor-not-allowed bg-gray-600' : ''}" ${aVoir === 0 ? 'disabled' : ''}>
               ${aVoir === 0 ? 'À jour' : `Regarder épisode ${prochain}`}
             </a>
           </div>
