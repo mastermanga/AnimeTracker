@@ -48,7 +48,9 @@
         const lien = `https://v6.voiranime.com/anime/${anime.slug}/${anime.slug}-${String(prochain).padStart(2, '0')}-vostfr/`;
 
         const card = document.createElement("div");
-        card.className = "bg-gray-800 rounded-2xl shadow-md p-4 flex flex-col md:flex-row items-start space-x-4";
+        card.className = "bg-gray-800 rounded-2xl shadow-md p-4 flex flex-col md:flex-row items-start space-x-4 anime-card";
+        card.setAttribute("data-slug", anime.slug);
+        card.setAttribute("data-episodes-dispo", anime.episodes_dispo);
 
         card.innerHTML = `
           <div class="flex-shrink-0">
@@ -57,9 +59,9 @@
           <div class="flex flex-col justify-start">
             <h2 class="text-xl font-semibold mb-2">${anime.titre}</h2>
             <p class="mb-1">📼 Total d'épisodes : ${anime.nb_episode}</p>
-            <p class="mb-1">🎬 Visionnés : ${anime.episodes_vus}</p>
+            <p class="mb-1 episodes-vus">🎬 Visionnés : ${anime.episodes_vus}</p>
             <p class="mb-1">📺 Sortis : ${anime.episodes_dispo}</p>
-            <p class="mb-2">🔥 À voir : ${aVoir} épisode${aVoir > 1 ? 's' : ''}</p>
+            <p class="mb-2 a-voir">🔥 À voir : ${aVoir} épisode${aVoir > 1 ? 's' : ''}</p>
             <a href="${lien}" target="_blank" class="w-48 text-center bg-blue-500 text-white px-4 py-2 rounded-xl hover:bg-blue-600 transition ${aVoir === 0 ? 'cursor-not-allowed bg-gray-600' : ''}" ${aVoir === 0 ? 'disabled' : ''}>
               ${aVoir === 0 ? 'À jour' : `Regarder épisode ${prochain}`}
             </a>
@@ -82,7 +84,9 @@
         .then(data => {
           if (data.success) {
             alert('Nombre d\'épisodes mis à jour avec succès !');
-            location.reload(); // Recharger la page pour mettre à jour l'affichage
+            
+            // Mise à jour de l'affichage sans recharger la page
+            updateAnimeInList(titre, newEpisodesVus);
           } else {
             alert('Erreur de mise à jour.');
           }
@@ -92,9 +96,46 @@
           console.error(err);
         });
     }
+
+    // Fonction pour mettre à jour les données d'un anime spécifique dans la liste
+    function updateAnimeInList(titre, newEpisodesVus) {
+      const animeList = document.getElementById("anime-list");
+      const animeCards = animeList.getElementsByClassName("anime-card");
+
+      // Trouver l'anime correspondant dans la liste
+      for (let card of animeCards) {
+        const animeTitle = card.querySelector("h2").textContent;
+
+        if (animeTitle === titre) {
+          const episodesVusElement = card.querySelector(".episodes-vus");
+          const aVoirElement = card.querySelector(".a-voir");
+          const lienElement = card.querySelector("a");
+
+          // Mettre à jour l'affichage des épisodes vus et à voir
+          const episodes_vus = newEpisodesVus;
+          const episodes_dispo = parseInt(card.getAttribute("data-episodes-dispo"));
+          const aVoir = episodes_dispo - episodes_vus;
+
+          episodesVusElement.textContent = `🎬 Visionnés : ${episodes_vus}`;
+          aVoirElement.textContent = `🔥 À voir : ${aVoir} épisode${aVoir > 1 ? 's' : ''}`;
+
+          // Mise à jour du lien de l'épisode suivant
+          const prochain = episodes_vus + 1;
+          const slug = card.getAttribute("data-slug");
+          const lien = `https://v6.voiranime.com/anime/${slug}/${slug}-${String(prochain).padStart(2, '0')}-vostfr/`;
+          lienElement.href = lien;
+          lienElement.textContent = aVoir === 0 ? 'À jour' : `Regarder épisode ${prochain}`;
+          lienElement.classList.toggle("cursor-not-allowed", aVoir === 0);
+          lienElement.classList.toggle("bg-gray-600", aVoir === 0);
+
+          break;
+        }
+      }
+    }
   </script>
 </body>
 </html>
+
 
 
 
