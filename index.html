@@ -14,13 +14,14 @@
 
   <script>
     const sheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTlxH-2fyYlatWV1FVl0E5lmXNk_1K_23RhBSodkZ38RB8XX0MrR75wzxcXMx9TCLMcwmHupt4FWWku/pub?gid=15026583&single=true&output=csv";
+    const appsScriptUrl = "https://script.google.com/macros/s/AKfycbw6r8COomhUIleKviwjftAxjFmbFn34-RpKX4QGP0b7hagsDcyJp5vnttggkyt04l5tgw/exec";
 
     fetch(sheetUrl)
       .then(res => res.text())
       .then(data => {
         const rows = data.trim().split('\n').slice(1);
         const animeData = rows.map(row => {
-          const [titre, episodes_vus, episodes_dispo, nb_episode, ID_MAL, slug,  image_url] = row.split(',');
+          const [titre, episodes_vus, episodes_dispo, nb_episode, ID_MAL, slug, image_url] = row.split(',');
           return {
             titre,
             slug,
@@ -41,10 +42,9 @@
 
       data.forEach(anime => {
         const aVoir = anime.episodes_dispo - anime.episodes_vus;
-        
         const prochain = anime.episodes_vus + 1;
         const lien = `https://v6.voiranime.com/anime/${anime.slug}/${anime.slug}-${String(prochain).padStart(2, '0')}-vostfr/`;
-        
+
         const card = document.createElement("div");
         card.className = "bg-gray-800 rounded-2xl shadow-md p-4 flex flex-col md:flex-row items-start space-x-4";
 
@@ -61,12 +61,37 @@
             <a href="${lien}" target="_blank" class="w-48 text-center bg-blue-500 text-white px-4 py-2 rounded-xl hover:bg-blue-600 transition ${aVoir === 0 ? 'cursor-not-allowed bg-gray-600' : ''}" ${aVoir === 0 ? 'disabled' : ''}>
               ${aVoir === 0 ? 'À jour' : `Regarder épisode ${prochain}`}
             </a>
+            <button class="mt-4 w-48 text-center bg-green-500 text-white px-4 py-2 rounded-xl hover:bg-green-600 transition" onclick="updateEpisodes('${anime.titre}', ${anime.episodes_vus}, '${anime.slug}')">
+              Marquer épisode comme vu
+            </button>
           </div>
         `;
         animeList.appendChild(card);
       });
     }
+
+    function updateEpisodes(titre, episodes_vus, slug) {
+      // Incrémenter le nombre d'épisodes visionnés
+      const newEpisodesVus = episodes_vus + 1;
+
+      // Appel à Google Apps Script pour mettre à jour la valeur dans Google Sheets
+      fetch(appsScriptUrl + `?titre=${encodeURIComponent(titre)}&episodes_vus=${newEpisodesVus}&slug=${encodeURIComponent(slug)}`)
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            alert("Épisode mis à jour avec succès !"); // Message de confirmation
+            window.location.reload(); // Rafraîchir la page pour voir les changements
+          } else {
+            alert("Une erreur est survenue lors de la mise à jour.");
+          }
+        })
+        .catch(error => {
+          console.error("Erreur de mise à jour:", error);
+          alert("Erreur de mise à jour.");
+        });
+    }
   </script>
 </body>
 </html>
+
 
