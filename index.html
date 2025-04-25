@@ -14,12 +14,13 @@
 
   <script>
     const sheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTlxH-2fyYlatWV1FVl0E5lmXNk_1K_23RhBSodkZ38RB8XX0MrR75wzxcXMx9TCLMcwmHupt4FWWku/pub?gid=15026583&single=true&output=csv";
-    const updateUrl = "https://script.google.com/macros/s/AKfycbyFylNTYDM33i6NT1m59Hb__cM8y6Hz1y9Ftvu72m83stsvT-Ba17MnLvNSnjqXM6IUVw/exec";
+    const updateUrl = "https://script.google.com/macros/s/AKfycbzp9ZEmKbxsMggdmnF9tP02Z8HGQWR0CDBCcZEGTQd8hoqZ20PbJyFNt7PNHeU_QMfmEg/exec"; // URL de ton script Apps
 
+    // Récupérer les données du Google Sheets (CSV)
     fetch(sheetUrl)
       .then(res => res.text())
       .then(data => {
-        const rows = data.trim().split('\n').slice(1);
+        const rows = data.trim().split('\n').slice(1); // Ignore la première ligne
         const animeData = rows.map(row => {
           const [titre, episodes_vus, episodes_dispo, nb_episode, ID_MAL, slug, image_url] = row.split(',');
           return {
@@ -33,16 +34,16 @@
         });
 
         animeData.sort((a, b) => (b.episodes_dispo - b.episodes_vus) - (a.episodes_dispo - a.episodes_vus));
-        displayAnime(animeData);
+        displayAnime(animeData);  // Affichage des données des animes
       });
 
+    // Fonction pour afficher les informations des animes
     function displayAnime(data) {
       const animeList = document.getElementById("anime-list");
-      animeList.innerHTML = "";
+      animeList.innerHTML = ""; // Clear the existing list
 
       data.forEach(anime => {
         const aVoir = anime.episodes_dispo - anime.episodes_vus;
-        
         const prochain = anime.episodes_vus + 1;
         const lien = `https://v6.voiranime.com/anime/${anime.slug}/${anime.slug}-${String(prochain).padStart(2, '0')}-vostfr/`;
 
@@ -71,6 +72,7 @@
       });
     }
 
+    // Fonction pour mettre à jour les épisodes
     function updateEpisodes(titre, episodes_vus) {
       const newEpisodesVus = episodes_vus + 1; // Ajouter 1 épisode vu
 
@@ -93,5 +95,6 @@
   </script>
 </body>
 </html>
+
 
 
