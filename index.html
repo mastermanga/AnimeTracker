@@ -20,7 +20,7 @@
       .then(data => {
         const rows = data.trim().split('\n').slice(1);
         const animeData = rows.map(row => {
-          const [titre, slug, episodes_vus, episodes_dispo, image_url, nb_episode] = row.split(',');
+          const [titre, episodes_vus, episodes_dispo, nb_episode, ID_MAL, slug,  image_url] = row.split(',');
           return {
             titre,
             slug,
