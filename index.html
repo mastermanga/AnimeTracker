@@ -65,9 +65,11 @@
             <a href="${lien}" target="_blank" class="w-48 text-center bg-blue-500 text-white px-4 py-2 rounded-xl hover:bg-blue-600 transition ${aVoir === 0 ? 'cursor-not-allowed bg-gray-600' : ''}" ${aVoir === 0 ? 'disabled' : ''}>
               ${aVoir === 0 ? 'À jour' : `Regarder épisode ${prochain}`}
             </a>
-            <button onclick="updateEpisodes('${anime.titre}', ${anime.episodes_vus})" class="mt-2 bg-green-500 text-white px-4 py-2 rounded-xl hover:bg-green-600 transition">
+            <button onclick="updateEpisodes('${anime.titre}', ${anime.episodes_vus}, this)" class="mt-2 bg-green-500 text-white px-4 py-2 rounded-xl hover:bg-green-600 transition">
               Mettre à jour les épisodes
             </button>
+            <p class="mt-2 text-sm text-green-500 success-message hidden">Épisodes mis à jour avec succès !</p>
+            <p class="mt-2 text-sm text-red-500 error-message hidden">Erreur lors de la mise à jour.</p>
           </div>
         `;
         animeList.appendChild(card);
@@ -77,28 +79,21 @@
     // Fonction pour mettre à jour les épisodes
     function updateEpisodes(titre, episodes_vus, button) {
       const newEpisodesVus = episodes_vus + 1; // Ajouter 1 épisode vu
-    
-      // Désactiver le bouton pour éviter les clics multiples
-      button.disabled = true;
-      button.textContent = "Mise à jour en cours...";
-    
-      // Ajouter un paramètre "cache_buster" pour forcer le rafraîchissement
-      const cacheBuster = new Date().getTime();
-      
+
       // Envoi de la requête GET à l'URL de mise à jour
-      fetch(`${updateUrl}?titre=${encodeURIComponent(titre)}&episodes_vus=${newEpisodesVus}&cache_buster=${cacheBuster}`)
+      fetch(`${updateUrl}?titre=${encodeURIComponent(titre)}&episodes_vus=${newEpisodesVus}`)
         .then(response => response.json())
         .then(data => {
           const successMessage = button.parentElement.querySelector(".success-message");
           const errorMessage = button.parentElement.querySelector(".error-message");
-    
+
           if (data.success) {
             successMessage.classList.remove("hidden");
             errorMessage.classList.add("hidden");
-    
+
             // Mise à jour de l'affichage sans recharger la page
             updateAnimeInList(titre, newEpisodesVus);
-    
+
             // Masquer le message après quelques secondes
             setTimeout(() => {
               successMessage.classList.add("hidden");
@@ -111,16 +106,11 @@
         .catch(err => {
           const successMessage = button.parentElement.querySelector(".success-message");
           const errorMessage = button.parentElement.querySelector(".error-message");
-    
+
           successMessage.classList.add("hidden");
           errorMessage.classList.remove("hidden");
-    
+
           console.error(err);
-        })
-        .finally(() => {
-          // Réactiver le bouton après la mise à jour
-          button.disabled = false;
-          button.textContent = "Mettre à jour les épisodes";
         });
     }
 
@@ -162,7 +152,6 @@
   </script>
 </body>
 </html>
-
 
 
 
