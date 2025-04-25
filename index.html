@@ -80,8 +80,12 @@
     function updateEpisodes(titre, episodes_vus, button) {
       const newEpisodesVus = episodes_vus + 1; // Ajouter 1 épisode vu
 
+        const cacheBuster = new Date().getTime();
+  
       // Envoi de la requête GET à l'URL de mise à jour
-      fetch(`${updateUrl}?titre=${encodeURIComponent(titre)}&episodes_vus=${newEpisodesVus}`)
+      fetch(`${updateUrl}?titre=${encodeURIComponent(titre)}&episodes_vus=${newEpisodesVus}&cache_buster=${cacheBuster}`)
+      // // Envoi de la requête GET à l'URL de mise à jour
+      // fetch(`${updateUrl}?titre=${encodeURIComponent(titre)}&episodes_vus=${newEpisodesVus}`)
         .then(response => response.json())
         .then(data => {
           const successMessage = button.parentElement.querySelector(".success-message");
