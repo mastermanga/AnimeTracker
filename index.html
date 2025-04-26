@@ -62,9 +62,9 @@
           </div>
           <div class="flex flex-col justify-start">
             <h2 class="text-xl font-semibold mb-2">${anime.titre}</h2>
-            <p class="mb-1">📼 Total d'épisodes 📼: ${anime.nb_episode}</p>
-            <p class="mb-1 episodes-vus">🎬 Visionnés 🎬: ${anime.episodes_vus}</p>
-            <p class="mb-1">📺 Sortis 📺: ${anime.episodes_dispo}</p>
+            <p class="mb-1">🎞️ Total d'épisodes 🎞️: ${anime.nb_episode}</p>
+            <p class="mb-1 episodes-vus">✔️ Visionnés ✔️: ${anime.episodes_vus}</p>
+            <p class="mb-1">📅 Sortis 📅: ${anime.episodes_dispo}</p>
             <p class="mb-2 a-voir">🔥 À voir 🔥: ${aVoir} épisode${aVoir > 1 ? 's' : ''}</p>
             <a href="${lien}" target="_blank" class="w-48 text-center bg-blue-500 text-white px-4 py-2 rounded-xl hover:bg-blue-600 transition ${aVoir === 0 ? 'cursor-not-allowed bg-gray-600' : ''}" ${aVoir === 0 ? 'disabled' : ''}>
               ${aVoir === 0 ? 'À jour' : `Regarder épisode ${prochain}`}
@@ -141,8 +141,8 @@
           const episodes_dispo = parseInt(card.getAttribute("data-episodes-dispo"));
           const aVoir = episodes_dispo - episodes_vus;
 
-          episodesVusElement.textContent = `🎬 Visionnés : ${episodes_vus}`;
-          aVoirElement.textContent = `🔥 À voir : ${aVoir} épisode${aVoir > 1 ? 's' : ''}`;
+          episodesVusElement.textContent = `✔️ Visionnés ✔️: ${episodes_vus}`;
+          aVoirElement.textContent = `🔥 À voir 🔥: ${aVoir} épisode${aVoir > 1 ? 's' : ''}`;
 
           // Mise à jour du lien de l'épisode suivant
           const prochain = episodes_vus + 1;
