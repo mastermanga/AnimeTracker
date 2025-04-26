@@ -128,5 +128,32 @@
 
           const episodes_vus = newEpisodesVus;
           const episodes_dispo = parseInt(card.getAttribute("data-episodes-dispo"));
-          const aVoir = episodes_dispo_
+          const aVoir = episodes_dispo - episodes_vus;
 
+          episodesVusElement.textContent = `✔️ Visionnés ✔️: ${episodes_vus}`;
+          aVoirElement.textContent = `🔥 À voir 🔥: ${aVoir} épisode${aVoir > 1 ? 's' : ''}`;
+
+          const prochain = episodes_vus + 1;
+          const slug = card.getAttribute("data-slug");
+          const lien = `https://v6.voiranime.com/anime/${slug}/${slug}-${String(prochain).padStart(2, '0')}-vostfr/`;
+          lienElement.href = lien;
+          lienElement.textContent = aVoir === 0 ? 'À jour' : `Regarder épisode ${prochain}`;
+          lienElement.classList.toggle("cursor-not-allowed", aVoir === 0);
+          lienElement.classList.toggle("bg-gray-600", aVoir === 0);
+          lienElement.classList.toggle("bg-blue-500", aVoir !== 0);
+
+          // Mise à jour du bouton "Valider l’épisode vu"
+          if (aVoir === 0) {
+            buttonValider.disabled = true;
+            buttonValider.textContent = 'À jour';
+            buttonValider.classList.remove('bg-green-500', 'hover:bg-green-600');
+            buttonValider.classList.add('bg-gray-600', 'cursor-not-allowed');
+          }
+
+          break;
+        }
+      }
+    }
+  </script>
+</body>
+</html>
