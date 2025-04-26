@@ -64,11 +64,12 @@
             <p class="mb-1 episodes-vus">✔️ Visionnés ✔️: ${anime.episodes_vus}</p>
             <p class="mb-1">📅 Sortis 📅: ${anime.episodes_dispo}</p>
             <p class="mb-2 a-voir">🔥 À voir 🔥: ${aVoir} épisode${aVoir > 1 ? 's' : ''}</p>
+            
             <a href="${lien}" target="_blank" class="w-48 text-center bg-blue-500 text-white px-4 py-2 rounded-xl hover:bg-blue-600 transition ${aVoir === 0 ? 'cursor-not-allowed bg-gray-600' : ''}" ${aVoir === 0 ? 'disabled' : ''}>
               ${aVoir === 0 ? 'À jour' : `Regarder épisode ${prochain}`}
             </a>
-            <button onclick="updateEpisodes('${anime.titre}', ${anime.episodes_vus}, this)" class="mt-2 bg-green-500 text-white px-4 py-2 rounded-xl hover:bg-green-600 transition">
-              Valider l’épisode vu
+            <button onclick="updateEpisodes('${anime.titre}', ${anime.episodes_vus}, this)" class="mt-2 text-white px-4 py-2 rounded-xl hover:bg-green-600 transition ${aVoir === 0 ? 'cursor-not-allowed bg-gray-600' : 'bg-green-500'}" ${aVoir === 0 ? 'disabled' : ''}>
+              ${aVoir === 0 ? 'À jour' : 'Valider l’épisode vu'}
             </button>
             <p class="mt-2 text-sm text-green-500 success-message hidden">Épisodes mis à jour avec succès !</p>
             <p class="mt-2 text-sm text-red-500 error-message hidden">Erreur lors de la mise à jour.</p>
