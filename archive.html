@@ -8,7 +8,11 @@
   <link rel="icon" href="favicon-32x32.png" type="image/png" />
 </head>
 <body class="transition-colors duration-500 bg-gray-900 text-gray-100 min-h-screen p-6">
-  <h1 class="text-3xl font-bold text-center mb-4">🎥 Anime Tracker 🎥</h1>
+  <h1 class="text-3xl font-bold text-center mb-4 flex items-center justify-center">
+    <img src="favicon-32x32.png" alt="favicon" class="w-8 h-8 mr-2">
+     Anime Tracker  
+    <img src="favicon-32x32.png" alt="favicon" class="w-8 h-8 ml-2">
+  </h1>
 
   <div id="anime-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
 
@@ -58,15 +62,15 @@
           </div>
           <div class="flex flex-col justify-start">
             <h2 class="text-xl font-semibold mb-2">${anime.titre}</h2>
-            <p class="mb-1">📼 Total d'épisodes : ${anime.nb_episode}</p>
-            <p class="mb-1 episodes-vus">🎬 Visionnés : ${anime.episodes_vus}</p>
-            <p class="mb-1">📺 Sortis : ${anime.episodes_dispo}</p>
-            <p class="mb-2 a-voir">🔥 À voir : ${aVoir} épisode${aVoir > 1 ? 's' : ''}</p>
+            <p class="mb-1">🎞️ Total d'épisodes 🎞️: ${anime.nb_episode}</p>
+            <p class="mb-1 episodes-vus">✔️ Visionnés ✔️: ${anime.episodes_vus}</p>
+            <p class="mb-1">📅 Sortis 📅: ${anime.episodes_dispo}</p>
+            <p class="mb-2 a-voir">🔥 À voir 🔥: ${aVoir} épisode${aVoir > 1 ? 's' : ''}</p>
             <a href="${lien}" target="_blank" class="w-48 text-center bg-blue-500 text-white px-4 py-2 rounded-xl hover:bg-blue-600 transition ${aVoir === 0 ? 'cursor-not-allowed bg-gray-600' : ''}" ${aVoir === 0 ? 'disabled' : ''}>
               ${aVoir === 0 ? 'À jour' : `Regarder épisode ${prochain}`}
             </a>
             <button onclick="updateEpisodes('${anime.titre}', ${anime.episodes_vus}, this)" class="mt-2 bg-green-500 text-white px-4 py-2 rounded-xl hover:bg-green-600 transition">
-              Mettre à jour les épisodes
+              Valider l’épisode vu
             </button>
             <p class="mt-2 text-sm text-green-500 success-message hidden">Épisodes mis à jour avec succès !</p>
             <p class="mt-2 text-sm text-red-500 error-message hidden">Erreur lors de la mise à jour.</p>
@@ -137,8 +141,8 @@
           const episodes_dispo = parseInt(card.getAttribute("data-episodes-dispo"));
           const aVoir = episodes_dispo - episodes_vus;
 
-          episodesVusElement.textContent = `🎬 Visionnés : ${episodes_vus}`;
-          aVoirElement.textContent = `🔥 À voir : ${aVoir} épisode${aVoir > 1 ? 's' : ''}`;
+          episodesVusElement.textContent = `✔️ Visionnés ✔️: ${episodes_vus}`;
+          aVoirElement.textContent = `🔥 À voir 🔥: ${aVoir} épisode${aVoir > 1 ? 's' : ''}`;
 
           // Mise à jour du lien de l'épisode suivant
           const prochain = episodes_vus + 1;
