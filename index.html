@@ -89,19 +89,15 @@
           const successMessage = button.parentElement.querySelector(".success-message");
           const errorMessage = button.parentElement.querySelector(".error-message");
 
-          if (data.success) {
-            successMessage.classList.remove("hidden");
-            errorMessage.classList.add("hidden");
+          
+          successMessage.classList.remove("hidden");
+          errorMessage.classList.add("hidden");
 
-            updateAnimeInList(titre, newEpisodesVus);
+          updateAnimeInList(titre, newEpisodesVus);
 
-            setTimeout(() => {
-              successMessage.classList.add("hidden");
-            }, 3000);
-          } else {
+          setTimeout(() => {
             successMessage.classList.add("hidden");
-            errorMessage.classList.remove("hidden");
-          }
+          }, 3000);
         })
         .catch(err => {
           const successMessage = button.parentElement.querySelector(".success-message");
