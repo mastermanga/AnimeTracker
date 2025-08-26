@@ -65,7 +65,7 @@
             <p class="mb-1">📅 Sortis 📅: ${anime.episodes_dispo}</p>
             <p class="mb-2 a-voir">🔥 À voir 🔥: ${aVoir} épisode${aVoir > 1 ? 's' : ''}</p>
             
-            <a href="${lien}" target="_blank" class="w-48 text-center bg-blue-500 text-white px-4 py-2 rounded-xl hover:bg-blue-600 transition ${aVoir === 0 ? 'cursor-not-allowed bg-gray-600' : ''}" ${aVoir === 0 ? 'disabled' : ''}>
+            <a href="${lien}" target="_blank" class="w-48 text-center bg-blue-500 text-white px-4 py-2 rounded-xl hover:bg-blue-600 transition ${aVoir === 0 ? 'cursor-not-allowed bg-gray-600' : ''}" ${aVoir === 0 ? 'disabled' : ''} rel="noopener">
               ${aVoir === 0 ? 'À jour' : `Regarder épisode ${prochain}`}
             </a>
             <button onclick="updateEpisodes('${anime.titre}', ${anime.episodes_vus}, this)" class="w-48 text-center text-white px-4 py-2 rounded-xl hover:bg-green-600 transition ${aVoir === 0 ? 'cursor-not-allowed bg-gray-600' : 'bg-green-500'}" ${aVoir === 0 ? 'disabled' : ''}>
