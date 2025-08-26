@@ -20,7 +20,7 @@
     const sheetUrl = "https://docs.google.com/spreadsheets/d/1WuGg-AH0X1x5ZdOswZlwn5KxE-V0TKeYTxovN20E9UE/export?format=csv&gid=15026583";
     const updateUrl = "https://script.google.com/macros/s/AKfycbyGVtKO68L9CZR6s2XDWTvav690n2rHPg03UigmeQjVLyRroT7OhaBkPTYcQ3EZU4slbQ/exec";
 
-    fetch(sheetUrl)
+    fetch(sheetUrl, { cache: 'no-store' })
       .then(res => res.text())
       .then(data => {
         const rows = data.trim().split('\n').slice(1);
@@ -29,8 +29,8 @@
           return {
             titre,
             slug,
-            episodes_vus: parseInt(episodes_vus),
-            episodes_dispo: parseInt(episodes_dispo),
+            episodes_vus: parseInt(episodes_vus, 10),
+            episodes_dispo: parseInt(episodes_dispo, 10),
             image_url,
             nb_episode
           };
