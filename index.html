@@ -81,34 +81,32 @@
 
     function updateEpisodes(titre, episodes_vus, button) {
       const newEpisodesVus = episodes_vus + 1;
-      const cacheBuster = new Date().getTime();
-
-      fetch(`${updateUrl}?titre=${encodeURIComponent(titre)}&episodes_vus=${newEpisodesVus}&cache_buster=${cacheBuster}`)
-        .then(response => {
+      const url = `${updateUrl}?${new URLSearchParams({
+        titre,
+        episodes_vus: newEpisodesVus,
+        cache_buster: Date.now()
+      })}`;
+    
+      fetch(url, { method: 'GET', mode: 'no-cors', cache: 'no-store' })
+        .then(() => {
           const successMessage = button.parentElement.querySelector(".success-message");
-          const errorMessage = button.parentElement.querySelector(".error-message");
-
-          
+          const errorMessage   = button.parentElement.querySelector(".error-message");
           successMessage.classList.remove("hidden");
           errorMessage.classList.add("hidden");
-
+    
           updateAnimeInList(titre, newEpisodesVus);
-
-          setTimeout(() => {
-            successMessage.classList.add("hidden");
-          }, 3000);
+    
+          setTimeout(() => successMessage.classList.add("hidden"), 3000);
         })
         .catch(err => {
           const successMessage = button.parentElement.querySelector(".success-message");
-          const errorMessage = button.parentElement.querySelector(".error-message");
-
+          const errorMessage   = button.parentElement.querySelector(".error-message");
           successMessage.classList.add("hidden");
           errorMessage.classList.remove("hidden");
-
           console.error(err);
         });
     }
-
+    
     function updateAnimeInList(titre, newEpisodesVus) {
       const animeList = document.getElementById("anime-list");
       const animeCards = animeList.getElementsByClassName("anime-card");
@@ -125,10 +123,10 @@
           const episodes_vus = newEpisodesVus;
           const episodes_dispo = parseInt(card.getAttribute("data-episodes-dispo"));
           const aVoir = episodes_dispo - episodes_vus;
-
+          buttonValider.setAttribute("onclick", `updateEpisodes('${titre.replace(/'/g,"\\'")}', ${episodes_vus}, this)`);
           episodesVusElement.textContent = `✔️ Visionnés ✔️: ${episodes_vus}`;
           aVoirElement.textContent = `🔥 À voir 🔥: ${aVoir} épisode${aVoir > 1 ? 's' : ''}`;
-
+          
           const prochain = episodes_vus + 1;
           const slug = card.getAttribute("data-slug");
           const lien = `https://v6.voiranime.com/anime/${slug}/${slug}-${String(prochain).padStart(2, '0')}-vostfr/`;
