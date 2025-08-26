@@ -84,8 +84,7 @@
       const cacheBuster = new Date().getTime();
 
       fetch(`${updateUrl}?titre=${encodeURIComponent(titre)}&episodes_vus=${newEpisodesVus}&cache_buster=${cacheBuster}`)
-        .then(response => response.json())
-        .then(data => {
+        .then(response => {
           const successMessage = button.parentElement.querySelector(".success-message");
           const errorMessage = button.parentElement.querySelector(".error-message");
 
